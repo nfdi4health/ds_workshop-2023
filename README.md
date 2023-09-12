@@ -11,3 +11,13 @@ Analysis requests are sent from a central analysis machine to several data-holdi
 ## You will need: 
 - An up to date version of R and RStudio installed on your local machine
 - The rights to install packages on your R session
+
+## The DataSHIELD approach: aggregate and assign functions
+**Assign functions** do not return an output to the client, with the exception of error or status messages. Assign functions create new objects and store them server-side either because the objects are potentially disclosive, or because they consist of the individual-level data which, in DataSHIELD, is never seen by the analyst. These new objects can include:
+- new transformed variables (e.g. mean centred or log transformed variables)
+- a new variable of a modified class (e.g. a variable of class numeric may be converted into a factor which R can then model as having discrete categorical levels)
+- a subset object (e.g. a dataframe including gender as a variable may be split into males and females).
+
+Assign functions return no output to the client except to indicate an error or useful messages about the object store on server-side.
+
+**Aggregate functions** analyse the data server-side and return an output in the form of aggregate data (summary statistics that are not disclosive) to the client. The help page for each function tells us what is returned and when not to expect an output on client-side.
