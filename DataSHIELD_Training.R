@@ -26,11 +26,61 @@ logindata <- builder$build()
 library(DSOpal)
 connections <- datashield.login(logins=logindata, assign = T)
 
-# Administrative functions
+
+####### shall we have more than 1 table on our servers with same variables to simulate more connected Opal Servers???
+
+#### Part 1: How to explore a new dataset and/or new DataSHIELD Options
+
+# Administrative functions to find out which functions can be used, what the control settings are etc.
 ds.listClientsideFunctions()
 DSI::datashield.methods(conns=connections)
 ds.listDisclosureSettings()
 DSI::datashield.connections()
+ds.listOpals()
+ds.listServersideFunctions()
+
+
+# How does the dataset look like?
+
+ds.colnames()
+ds.class()
+ds.dim()
+# ds.exists() maybe this one would be good after we create a new variable
+ds.length()
+ds.levels()
+ds.ls()
+ds.numNA()
+
+
+
+#### Topic 2: How can I transform the individual level data on the server side?
+
+ds.abs()
+ds.completeCases()
+ds.dataFrame() # ?
+ds.exp()
+ds.log()
+ds.sqrt()
+ds.recodeLevels()
+ds.recodeValues()
+ds.replaceNA()
+ds.make()
+
+
+
+#### Sub-Topic (or perhaps later?): Functions helping with faulty upload
+#### could also be time point when we should how to use less than standard connections
+#### i.e. connections[-1] etc...
+
+ds.asInteger()
+ds.asFactor()
+ds.Boole()
+ds.asNumeric()
+ds.changeRefGroup()
+
+
+#### Topic 3: Aggregate Functions
+
 
 
 # Data Analysis functions (generally of type "Aggregate")
