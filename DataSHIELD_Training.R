@@ -13,73 +13,90 @@ builder <- DSI::newDSLoginBuilder()
 builder$append(server="ActivE", url="https://dsmolep.mdc-berlin.de",
                user=readline("Input username: "),
                password=readline("Input password: "),
-               table = "Test.harmonized_study_TEST_table_TEST")
-# builder$append(server="EPIC-Potsdam", url="",
-#                user=readline("Input username: "),
-#                password=readline("Input password: "),
-#                table = "")
+               table = "N4HWorkshop23.WS_ActivE")
+builder$append(server="EPIC-Potsdam", url="https://hsz.dife.de/zopal",
+               user=readline("Input username: "),
+               password=readline("Input password: "),
+               table = "N4HWorkshop23.WS_EPIC")
 
 logindata <- builder$build()
 
 
 # Then perform login in each server
-library(DSOpal)
-connections <- datashield.login(logins=logindata, assign = T)
+connections <- datashield.login(logins=logindata, assign = T, symbol = "D")
 
 
 ####### shall we have more than 1 table on our servers with same variables to simulate more connected Opal Servers???
 
 #### Part 1: How to explore a new dataset and/or new DataSHIELD Options
-
 # Administrative functions to find out which functions can be used, what the control settings are etc.
-ds.listClientsideFunctions()
-DSI::datashield.methods(conns=connections)
-ds.listDisclosureSettings()
-DSI::datashield.connections()
-ds.listOpals()
-ds.listServersideFunctions()
 
+#### Get an overview of DataSHIELD client-side functions
+ds.listClientsideFunctions()
+
+#### Get an overview of allowed DataSHIELD server-side functions
+DSI::datashield.methods(conns=connections)
+
+#### Get an overview of discloure controls / settings
+ds.listDisclosureSettings()
 
 # How does the dataset look like?
 
-ds.colnames()
-ds.class()
-ds.dim()
-# ds.exists() maybe this one would be good after we create a new variable
-ds.length()
-ds.levels()
-ds.ls()
-ds.numNA()
-
+ds.colnames("D")
+ds.class("D$AGE")
+ds.dim("D")
+ds.length("D$AGE")
+ds.levels("D$SEX")
+ds.numNA("D$AGE")
 
 
 #### Topic 2: How can I transform the individual level data on the server side?
 
 ds.abs()
 ds.completeCases()
-ds.dataFrame() # ?
 ds.exp()
 ds.log()
 ds.sqrt()
-ds.recodeLevels()
-ds.recodeValues()
-ds.replaceNA()
-ds.make()
+#ds.recodeLevels()
+#ds.recodeValues()
+#ds.replaceNA()
+#ds.make()
 
-
+ds.dataFrame()
+ds.exists()
 
 #### Sub-Topic (or perhaps later?): Functions helping with faulty upload
-#### could also be time point when we should how to use less than standard connections
+#### Example with numeric variable that should be categorical
+#### Example text variable for asNumeric
 #### i.e. connections[-1] etc...
 
 ds.asInteger()
 ds.asFactor()
-ds.Boole()
 ds.asNumeric()
-ds.changeRefGroup()
 
 
-#### Topic 3: Aggregate Functions
+#### Topic 3: Aggregate Functions + Models (at least GLM)
+
+ds.cor()
+ds.cov()
+ds.kurtosis()
+ds.mean()
+ds.meanSdGp()
+# ....
+
+
+#### Topic 4: Plots
+
+#### histogram, scatterplot (noise options, and why this is still complying with privacy control)
+
+
+#### Topic 5: other cases, e.g. different DS packages
+#### Having additional package installed on MDC Opal which DIfE does not have
+# install packages other than dsBase
+# library client side etc bla bla...
+#### datashieldDescriptives Example
+#### maybe example from cluster
+
 
 
 
