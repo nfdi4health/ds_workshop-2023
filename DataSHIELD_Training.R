@@ -215,30 +215,31 @@ ds.scatterPlot(x='Data_Corr$AGE_Corr',
 
 install.packages("remotes")
 library(remotes)
+# no need to update
 remotes::install_github("sofiasiamp/datashieldDescriptives")
 
 library(datashieldDescriptives)
 
 datashieldDescriptives::datashield_descriptive(df="Data_Corr",
                                                dsfunction = ds.class,
-                                               datasources = connections,
+                                               opal_connection = connections,
                                                save = F
                                                )
-# wrong output
+
 datashieldDescriptives::datashield_descriptive(df="Data_Corr",
                                                dsfunction = ds.numNA,
-                                               datasources = connections,
+                                               opal_connection = connections,
                                                save = F
 )
 
 datashieldDescriptives::datashield_descriptive(df="Data_Corr",
                                                dsfunction = ds.length,
-                                               datasources = connections,
+                                               opal_connection =  connections,
                                                save = F
 )
-# error
+
 datashieldDescriptives::datashield_summary(df = "Data_Corr",
-                                           datasources = connections,
+                                           opal_connection = connections,
                                            save = F
                                            )
 
