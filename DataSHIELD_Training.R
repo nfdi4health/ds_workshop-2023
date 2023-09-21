@@ -45,7 +45,6 @@ connections <- datashield.login(logins=logindata, assign = T, symbol = "D")
 
 
 
-
 #### Part 1: How to explore a new dataset and/or new DataSHIELD Options
 #### Part 1A: Administrative functions to find out which functions can be used, what the control settings are etc.
 
@@ -57,6 +56,10 @@ DSI::datashield.methods(conns=connections)
 
 #### Get an overview of discloure controls / settings
 ds.listDisclosureSettings()
+
+
+
+
 
 
 #### Part 1B: Functions that provide feedback on the datasets or variables - How does the dataset look like?
@@ -91,6 +94,7 @@ ds.class(x = "D$SOD_POT")
 ds.asNumeric(x.name = "D$AGE",
              newobj = "AGE_Corr",
              datasources = connections)
+
 
 ds.asFactor(input.var.name = "D$SMOKE_ST",
             newobj.name = "SMOKE_ST_Corr",
