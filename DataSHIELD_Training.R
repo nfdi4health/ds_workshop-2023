@@ -254,3 +254,22 @@ datashieldDescriptives::datashield_table(df = "Data_Corr",
 DSI::datashield.logout(connections)
 
 
+
+
+
+
+
+
+
+
+#### Link for Evaluation
+#### https://www.soscisurvey.de/NFDI4Health_WS_FAIRifizierung/
+
+
+
+
+
+
+
+
+
