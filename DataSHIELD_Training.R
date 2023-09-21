@@ -8,7 +8,10 @@ library(devtools)
 install.packages('DSI')
 install.packages('DSOpal', dependencies=TRUE)
 install_github("datashield/dsBaseClient", ref = "6.2.0")
+install_github("sofiasiamp/datashieldDescriptives")
 
+#### https://dsmolep.mdc-berlin.de/ui/index.html
+#### https://hsz.dife.de/zopal/ui/index.html#!dashboard
 
 #### Load DataSHIELD libraries
 library(DSI)
@@ -121,7 +124,11 @@ ds.dim(x = "Data_Corr",
        type = "both")
 
 ds.length(x = "Data_Corr$AGE_Corr")
+
 ds.levels(x = "Data_Corr$SEX")
+
+ds.levels(x = "Data_Corr$AGE_Corr")
+
 ds.numNA(x = "Data_Corr$SOD_POT")
 
 
@@ -146,15 +153,6 @@ ds.completeCases(x = "Data_Corr",
                  newobj = "Data_Corr_Clean")
 
 
-#### Not entirely sure on this section yet, I might use it in the glm model building part further down
-ds.dataFrame(x = c("Data_Corr$AGE_Corr",
-                   "Data_Corr$SEX",
-                   "SOD_POT_LOG"),
-             newobj = "Data4Analysis")
-
-ds.exists("Data4Analysis")
-
-ds.colnames("Data4Analysis")
 
 
 
@@ -162,7 +160,7 @@ ds.colnames("Data4Analysis")
 ?ds.meanSdGp
 
 ds.mean(x = "Data_Corr$AGE_Corr")
-ds.cov(x = "Data_Corr$AGE_Corr")
+ds.var(x = "Data_Corr$AGE_Corr")
 
 ds.meanSdGp(x = "Data_Corr$AGE_Corr",
             y = "Data_Corr$SMOKE_ST_Corr")
@@ -186,25 +184,28 @@ ds.summary(x = "Data_Corr$SOD_POT",
 
 
 #### Topic 3B: Building Models
+?ds.glm
 mod <- ds.glm(formula = "SOD_POT~AGE_Corr+SEX",
               data = "Data_Corr",
               family = "gaussian",
               datasources = connections)
 mod
 
-mod <- ds.glm(formula = "SMOKE_ST_Corr~AGE_Corr+SEX",
+
+
+mod2 <- ds.glm(formula = "SMOKE_ST_Corr~AGE_Corr+SEX",
               data = "Data_Corr",
               family = "binomial",
               datasources = connections)
-mod
+mod2
 
-#### Topic 4: Plotting Graphs: How is this possible in DataSHIELD (we should add Demetris
-#### paper to the PPTX or Readme File)
+#### Topic 4: Plotting Graphs: How is this possible in DataSHIELD?
+#### https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/s12911-022-01754-4
+
 ?ds.histogram
 
 ds.histogram(x="Data_Corr$SOD_POT")
 ds.histogram(x="Data_Corr$AGE_Corr")
-
 
 
 ?ds.scatterPlot
@@ -217,54 +218,39 @@ ds.scatterPlot(x='Data_Corr$AGE_Corr',
 #### Topic 5: Improved analyst experience by using datashieldDescriptives (work in progress)
 #### This is a client-side only package that only modifies output from dsBaseClient functions
 
-install.packages("remotes")
-library(remotes)
-# no need to update
-remotes::install_github("sofiasiamp/datashieldDescriptives")
 
 library(datashieldDescriptives)
 
-datashieldDescriptives::datashield_descriptive(df="Data_Corr",
+ds.class(x = "Data_Corr")
+
+
+datashieldDescriptives::datashield_descriptive(df = "Data_Corr",
                                                dsfunction = ds.class,
                                                opal_connection = connections,
-                                               save = F
-                                               )
+                                               save = FALSE)
 
-datashieldDescriptives::datashield_descriptive(df="Data_Corr",
+datashieldDescriptives::datashield_descriptive(df = "Data_Corr",
                                                dsfunction = ds.numNA,
                                                opal_connection = connections,
-                                               save = F
-)
+                                               save = FALSE)
 
-datashieldDescriptives::datashield_descriptive(df="Data_Corr",
+datashieldDescriptives::datashield_descriptive(df = "Data_Corr",
                                                dsfunction = ds.length,
                                                opal_connection =  connections,
-                                               save = F
-)
+                                               save = FALSE)
 
 datashieldDescriptives::datashield_summary(df = "Data_Corr",
                                            opal_connection = connections,
-                                           save = F
-                                           )
+                                           save = FALSE)
 
 
 datashieldDescriptives::datashield_table(df = "Data_Corr",
-                                         opal_connection = connections
-)
-
-
-#### Topic 6: other cases, e.g. different DS packages
-#### Having additional package installed on MDC Opal which DIfE does not have
-#### install packages other than dsBase
-#### library client side etc bla bla...
-#### maybe example from cluster
+                                         opal_connection = connections)
 
 
 
-#### Saving workspace?
-datashield.workspace_save(connections, "my-workspace-datashield")
-
-datashield.workspaces(connections)
 
 #### Logging out
 DSI::datashield.logout(connections)
+
+
