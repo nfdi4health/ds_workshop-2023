@@ -1,7 +1,7 @@
 
 
 #### Installation of developer tools library, so that packages can be installed directly from GitHub
-install.packages(devtools)
+install.packages("devtools")
 library(devtools)
 
 #### Install DataSHIELD packages and dependencies if not already done
