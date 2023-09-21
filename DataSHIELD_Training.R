@@ -55,7 +55,7 @@ connections <- datashield.login(logins=logindata, assign = T, symbol = "D")
 ds.listClientsideFunctions()
 
 #### Get an overview of allowed DataSHIELD server-side functions
-DSI::datashield.methods(conns=connections)
+server_function <- DSI::datashield.methods(conns=connections)
 
 #### Get an overview of discloure controls / settings
 ds.listDisclosureSettings()
@@ -109,7 +109,7 @@ ds.dataFrame(x = c("D$SEX",
                    "D$SOD_POT"),
              newobj = "Data_Corr")
 
-
+ds.ls()
 
 
 #### Some functions allow different display upon execution
@@ -127,7 +127,11 @@ ds.length(x = "Data_Corr$AGE_Corr")
 
 ds.levels(x = "Data_Corr$SEX")
 
-ds.levels(x = "Data_Corr$AGE_Corr")
+#### cannot enforce to form categorical variable our ot numerical because of disclosure risk
+ds.asFactor(input.var.name = "Data_Corr$AGE_Corr",
+            newobj.name = "Factor_Age")
+
+
 
 ds.numNA(x = "Data_Corr$SOD_POT")
 
@@ -159,7 +163,9 @@ ds.completeCases(x = "Data_Corr",
 #### Topic 3A: Aggregate Functions - receiving summary statistics
 ?ds.meanSdGp
 
-ds.mean(x = "Data_Corr$AGE_Corr")
+ds.mean(x = "Data_Corr$AGE_Corr",
+        type = "combine")
+
 ds.var(x = "Data_Corr$AGE_Corr")
 
 ds.meanSdGp(x = "Data_Corr$AGE_Corr",
@@ -221,7 +227,7 @@ ds.scatterPlot(x='Data_Corr$AGE_Corr',
 
 library(datashieldDescriptives)
 
-ds.class(x = "Data_Corr")
+ds.class(x = "Data_Corr$AGE_Corr")
 
 
 datashieldDescriptives::datashield_descriptive(df = "Data_Corr",
@@ -239,7 +245,7 @@ datashieldDescriptives::datashield_descriptive(df = "Data_Corr",
                                                opal_connection =  connections,
                                                save = FALSE)
 
-datashieldDescriptives::datashield_summary(df = "Data_Corr",
+ds_ws <- datashieldDescriptives::datashield_summary(df = "Data_Corr",
                                            opal_connection = connections,
                                            save = FALSE)
 
