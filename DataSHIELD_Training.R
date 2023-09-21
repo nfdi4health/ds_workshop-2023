@@ -158,8 +158,6 @@ ds.colnames("Data4Analysis")
 
 
 
-
-
 #### Topic 3A: Aggregate Functions - receiving summary statistics
 ?ds.meanSdGp
 
@@ -188,7 +186,17 @@ ds.summary(x = "Data_Corr$SOD_POT",
 
 
 #### Topic 3B: Building Models
+mod <- ds.glm(formula = "SOD_POT~AGE_Corr+SEX",
+              data = "Data_Corr",
+              family = "gaussian",
+              datasources = connections)
+mod
 
+mod <- ds.glm(formula = "SMOKE_ST_Corr~AGE_Corr+SEX",
+              data = "Data_Corr",
+              family = "binomial",
+              datasources = connections)
+mod
 
 #### Topic 4: Plotting Graphs: How is this possible in DataSHIELD (we should add Demetris
 #### paper to the PPTX or Readme File)
@@ -208,9 +216,41 @@ ds.scatterPlot(x='Data_Corr$AGE_Corr',
 
 #### Topic 5: Improved analyst experience by using datashieldDescriptives (work in progress)
 #### This is a client-side only package that only modifies output from dsBaseClient functions
-install_github("sofiasiamp/datashieldDescriptives", ref = "1.0.0")
+
+install.packages("remotes")
+library(remotes)
+# no need to update
+remotes::install_github("sofiasiamp/datashieldDescriptives")
+
 library(datashieldDescriptives)
 
+datashieldDescriptives::datashield_descriptive(df="Data_Corr",
+                                               dsfunction = ds.class,
+                                               opal_connection = connections,
+                                               save = F
+                                               )
+
+datashieldDescriptives::datashield_descriptive(df="Data_Corr",
+                                               dsfunction = ds.numNA,
+                                               opal_connection = connections,
+                                               save = F
+)
+
+datashieldDescriptives::datashield_descriptive(df="Data_Corr",
+                                               dsfunction = ds.length,
+                                               opal_connection =  connections,
+                                               save = F
+)
+
+datashieldDescriptives::datashield_summary(df = "Data_Corr",
+                                           opal_connection = connections,
+                                           save = F
+                                           )
+
+
+datashieldDescriptives::datashield_table(df = "Data_Corr",
+                                         opal_connection = connections
+)
 
 
 #### Topic 6: other cases, e.g. different DS packages
@@ -222,6 +262,9 @@ library(datashieldDescriptives)
 
 
 #### Saving workspace?
+datashield.workspace_save(connections, "my-workspace-datashield")
+
+datashield.workspaces(connections)
 
 #### Logging out
 DSI::datashield.logout(connections)
