@@ -51,48 +51,27 @@ connections <- datashield.login(logins=logindata, assign = T, symbol = "D")
 #### Part 1: How to explore a new dataset and/or new DataSHIELD Options
 #### Part 1A: Administrative functions to find out which functions can be used, what the control settings are etc.
 
-#### Get an overview of DataSHIELD client-side functions
+#### Get an overview of DataSHIELD client-side functions, allowed DataSHIELD server-side functions & discloure controls / settings
 ds.listClientsideFunctions()
-
-#### Get an overview of allowed DataSHIELD server-side functions
 server_function <- DSI::datashield.methods(conns=connections)
-
-#### Get an overview of discloure controls / settings
 ds.listDisclosureSettings()
 
 
 
-
-
-
 #### Part 1B: Functions that provide feedback on the datasets or variables - How does the dataset look like?
-?ds.colnames
 ds.colnames("D")
 
 #### How to select to which of the connected Opal Servers an analysis request is sent
 ds.colnames(x = "D",
             datasources = connections)
 
-ds.colnames(x = "D",
-            datasources = connections[2])
-
-ds.colnames(x = "D",
-            datasources = connections[c(1,2)])
-
-ds.colnames(x = "D",
-            datasources = connections[-2])
-
 ds.class(x = "D$SEX")
 ds.class(x = "D$AGE")
 ds.class(x = "D$SMOKE_ST")
 ds.class(x = "D$SOD_POT")
 
+#### Fixing upload errors inside DataSHIELD
 
-
-#### Fixing upload errors (mostly stemming from data dictionary, should be minimised
-#### when using the harmonizr package)
-
-?ds.asNumeric
 
 ds.asNumeric(x.name = "D$AGE",
              newobj = "AGE_Corr",
@@ -113,15 +92,9 @@ ds.ls()
 
 
 #### Some functions allow different display upon execution
-?ds.dim
+
 ds.dim(x = "Data_Corr",
        type = "split")
-
-ds.dim(x = "Data_Corr",
-       type = "combined")
-
-ds.dim(x = "Data_Corr",
-       type = "both")
 
 ds.length(x = "Data_Corr$AGE_Corr")
 
@@ -141,17 +114,11 @@ ds.numNA(x = "Data_Corr$SOD_POT")
 
 
 #### Topic 2A: How can I transform the individual level data on the server side?
-?ds.abs
-
-ds.abs(x = "Data_Corr$SOD_POT")
-
 ds.abs(x = "Data_Corr$SOD_POT",
        newobj = "SOD_POT_ABS")
 
-
 ds.log(x = "Data_Corr$SOD_POT",
        newobj = "SOD_POT_LOG")
-
 
 ds.completeCases(x = "Data_Corr",
                  newobj = "Data_Corr_Clean")
@@ -208,13 +175,8 @@ mod2
 #### Topic 4: Plotting Graphs: How is this possible in DataSHIELD?
 #### https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/s12911-022-01754-4
 
-?ds.histogram
 
 ds.histogram(x="Data_Corr$SOD_POT")
-ds.histogram(x="Data_Corr$AGE_Corr")
-
-
-?ds.scatterPlot
 
 ds.scatterPlot(x='Data_Corr$AGE_Corr',
                y='Data_Corr$SOD_POT')
@@ -227,18 +189,14 @@ ds.scatterPlot(x='Data_Corr$AGE_Corr',
 
 library(datashieldDescriptives)
 
-ds.class(x = "Data_Corr$AGE_Corr")
+ds.class(x = "D")
 
 
-datashieldDescriptives::datashield_descriptive(df = "Data_Corr",
-                                               dsfunction = ds.class,
-                                               opal_connection = connections,
-                                               save = FALSE)
+study_class_overview <- datashieldDescriptives::datashield_descriptive(df = "D",
+                                                                       dsfunction = ds.class,
+                                                                       opal_connection = connections,
+                                                                       save = FALSE)
 
-datashieldDescriptives::datashield_descriptive(df = "Data_Corr",
-                                               dsfunction = ds.numNA,
-                                               opal_connection = connections,
-                                               save = FALSE)
 
 datashieldDescriptives::datashield_descriptive(df = "Data_Corr",
                                                dsfunction = ds.length,
@@ -265,14 +223,7 @@ DSI::datashield.logout(connections)
 
 
 
-
-
-
-#### Link for Evaluation
-#### https://www.soscisurvey.de/NFDI4Health_WS_FAIRifizierung/
-
-
-
+#### Evaluation using QR Code
 
 
 
