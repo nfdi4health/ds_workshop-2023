@@ -54,7 +54,7 @@ connections <- datashield.login(logins=logindata, assign = T, symbol = "D")
 #### Get an overview of DataSHIELD client-side functions, allowed DataSHIELD server-side functions & discloure controls / settings
 ds.listClientsideFunctions()
 server_function <- DSI::datashield.methods(conns=connections)
-ds.listDisclosureSettings()
+disclosure_settings <- ds.listDisclosureSettings()
 
 
 
@@ -63,14 +63,14 @@ ds.colnames("D")
 
 #### How to select to which of the connected Opal Servers an analysis request is sent
 ds.colnames(x = "D",
-            datasources = connections)
+            datasources = connections[c(1,2)])
 
 ds.class(x = "D$SEX")
 ds.class(x = "D$AGE")
 ds.class(x = "D$SMOKE_ST")
 ds.class(x = "D$SOD_POT")
 
-#### Fixing upload errors inside DataSHIELD
+#### Fixing upload errors within DataSHIELD
 
 
 ds.asNumeric(x.name = "D$AGE",
@@ -100,16 +100,7 @@ ds.length(x = "Data_Corr$AGE_Corr")
 
 ds.levels(x = "Data_Corr$SEX")
 
-#### cannot enforce to form categorical variable our ot numerical because of disclosure risk
-ds.asFactor(input.var.name = "Data_Corr$AGE_Corr",
-            newobj.name = "Factor_Age")
-
-
-
 ds.numNA(x = "Data_Corr$SOD_POT")
-
-
-
 
 
 
@@ -128,12 +119,9 @@ ds.completeCases(x = "Data_Corr",
 
 
 #### Topic 3A: Aggregate Functions - receiving summary statistics
-?ds.meanSdGp
 
 ds.mean(x = "Data_Corr$AGE_Corr",
         type = "combine")
-
-ds.var(x = "Data_Corr$AGE_Corr")
 
 ds.meanSdGp(x = "Data_Corr$AGE_Corr",
             y = "Data_Corr$SMOKE_ST_Corr")
@@ -157,7 +145,7 @@ ds.summary(x = "Data_Corr$SOD_POT",
 
 
 #### Topic 3B: Building Models
-?ds.glm
+
 mod <- ds.glm(formula = "SOD_POT~AGE_Corr+SEX",
               data = "Data_Corr",
               family = "gaussian",
