@@ -22,8 +22,8 @@ library(dsBaseClient)
 #### The server name (eg ActivE, EPIC) can be chosen independently by users
 builder <- DSI::newDSLoginBuilder()
 builder$append(server="ActivE", url="https://dsmolep.mdc-berlin.de",
-               user="gmds2023",
-               password="Gmds!2023",
+               user="dgepi2023",
+               password="DGEpi2023!",
                table = "N4HWorkshop23.WS_ActivE")
 builder$append(server="EPIC", url="https://hsz.dife.de/zopal",
                user="N4HWS2301",
